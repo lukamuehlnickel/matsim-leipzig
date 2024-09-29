@@ -84,7 +84,8 @@ public final class RunOfflineAirPollutionAnalysisByVehicleCategory implements MA
 		String runDirectory = null;
 		String analysisOutputDirectory = null;
 		String outputDir = "analysis/analysis-emissions/";
-
+        //C:/Users/lukam/Nextcloud/MatSim SoSe24/Leipzig_output/base_case/emissions/
+//"C:/Users/lukam/Nextcloud/MatSim SoSe24/Leipzig_output/base_case/"
 		if (args.length == 1) {
 			runDirectory = args[0];
 			if (!runDirectory.endsWith("/")) runDirectory = runDirectory + "/";
@@ -182,11 +183,11 @@ public final class RunOfflineAirPollutionAnalysisByVehicleCategory implements MA
 			VehicleUtils.setHbefaSizeClass(freightEngineInformation, "average");
 			VehicleUtils.setHbefaEmissionsConcept(freightEngineInformation, "average");
 
-			EngineInformation drtEngineInformation = drtVehicleType.getEngineInformation();
-			VehicleUtils.setHbefaVehicleCategory(drtEngineInformation, HbefaVehicleCategory.PASSENGER_CAR.toString());
-			VehicleUtils.setHbefaTechnology(drtEngineInformation, "average");
-			VehicleUtils.setHbefaSizeClass(drtEngineInformation, "average");
-			VehicleUtils.setHbefaEmissionsConcept(drtEngineInformation, "average");
+			//EngineInformation drtEngineInformation = drtVehicleType.getEngineInformation();
+			//VehicleUtils.setHbefaVehicleCategory(drtEngineInformation, HbefaVehicleCategory.PASSENGER_CAR.toString());
+			//VehicleUtils.setHbefaTechnology(drtEngineInformation, "average");
+			//VehicleUtils.setHbefaSizeClass(drtEngineInformation, "average");
+			//VehicleUtils.setHbefaEmissionsConcept(drtEngineInformation, "average");
 
 			// public transit vehicles should be considered as non-hbefa vehicles
 			for (VehicleType type : scenario.getTransitVehicles().getVehicleTypes().values()) {

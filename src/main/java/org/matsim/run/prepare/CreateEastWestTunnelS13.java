@@ -48,8 +48,8 @@ public class CreateEastWestTunnelS13 {
             vehicleType.setMaximumVelocity(36);
             vehicleType.setNetworkMode(TransportMode.pt);
             vehicleType.setDescription("shuttle vehicle type");
-            vehicleType.getCapacity().setSeats(10000);
-            vehicleType.getCapacity().setStandingRoom(10000);
+            vehicleType.getCapacity().setSeats(400);
+            vehicleType.getCapacity().setStandingRoom(800);
             scenario.getTransitVehicles().addVehicleType(vehicleType);
 
 
@@ -346,7 +346,7 @@ public class CreateEastWestTunnelS13 {
                             Stop9_ew, Stop10_ew, Stop11_ew, Stop12_ew, Stop13_ew, Stop14_ew, Stop15_ew, Stop16_ew, Stop17_ew, Stop18_ew),"pt");
 
             // create Departures & corresponding Vehicles
-            for (int i = 9 * 3600; i < 13 * 3600; i += 300) {
+            for (int i = 6 * 3600; i < 23 * 3600; i += 300) {
                 var departure = scheduleFactory.createDeparture(Id.create("departure_" + i, Departure.class), i);
                 var vehicle = scenario.getTransitVehicles().getFactory().createVehicle(Id.createVehicleId("shuttle_vehicle_w_" + i), vehicleType);
                 departure.setVehicleId(vehicle.getId());
@@ -355,7 +355,7 @@ public class CreateEastWestTunnelS13 {
                 route_we.addDeparture(departure);
             }
 
-            for (int i = 9 * 3600; i < 13 * 3600; i += 300) {
+            for (int i = 6 * 3600; i < 23 * 3600; i += 300) {
                 var departure = scheduleFactory.createDeparture(Id.create("departure_" + i, Departure.class), i);
                 var vehicle = scenario.getTransitVehicles().getFactory().createVehicle(Id.createVehicleId("shuttle_vehicle_e_" + i), vehicleType);
                 departure.setVehicleId(vehicle.getId());

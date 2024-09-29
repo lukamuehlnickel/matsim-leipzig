@@ -1,3 +1,4 @@
+
 package org.matsim.run.prepare;
 
 import org.matsim.api.core.v01.Coord;
@@ -21,7 +22,7 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Set;
 
-public class CreateTunnelLine {
+public class CreateTunnelLineNorth {
 
     private static final LinkNetworkRouteFactory routeFactory = new LinkNetworkRouteFactory();
     private static final NetworkFactory networkFactory = NetworkUtils.createNetwork().getFactory();
@@ -61,10 +62,10 @@ public class CreateTunnelLine {
         var Lindenauer = network.getNodes().get(Id.createNodeId("pt_000012320"));
         var Sportforum = network.getNodes().get(Id.createNodeId("pt_000011071"));
         var Hbf = network.getNodes().get(Id.createNodeId("pt_008098205"));
-        var Gerichtsweg = network.getNodes().get(Id.createNodeId("pt_000011064"));
-        var Riebeckstraße = network.getNodes().get(Id.createNodeId("pt_000011330"));
-        var AngerCrottendorf = network.getNodes().get(Id.createNodeId("pt_008010008"));
-        var endNode = network.getFactory().createNode(Id.createNodeId("pt_end"), new Coord(738266.2826501003 + 100, 5692349.772973169 + 100));
+        var FriedrichListPlatz = network.getNodes().get(Id.createNodeId("pt_000012706"));
+        var LeipzigOst = network.getFactory().createNode(Id.createNodeId("pt_LeipzigOst"), new Coord(737175.6875, 5694209));
+        var endNode = network.getFactory().createNode(Id.createNodeId("pt_end"), new Coord(737175.6875 - 100, 5694209 - 100));
+        network.addNode(LeipzigOst);
         network.addNode(endNode);
 
         //both directions w=western direction, e=eastern direction
@@ -72,33 +73,29 @@ public class CreateTunnelLine {
         var connection1_we = createLink("pt_2_we", Plagwitz, Lindenauer);
         var connection2_we = createLink("pt_3_we", Lindenauer, Sportforum);
         var connection3_we = createLink("pt_4_we", Sportforum, Hbf);
-        var connection4_we = createLink("pt_5_we", Hbf, Gerichtsweg);
-        var connection5_we = createLink("pt_6_we", Gerichtsweg, Riebeckstraße);
-        var connection6_we = createLink("pt_7_we", Riebeckstraße, AngerCrottendorf);
-        var endLink_we = createLink("pt_8_we", AngerCrottendorf, endNode);
+        var connection4_we = createLink("pt_5_we", Hbf, FriedrichListPlatz);
+        var connection5_we = createLink("pt_6_we", FriedrichListPlatz, LeipzigOst);
+        var endLink_we = createLink("pt_7_we", LeipzigOst, endNode);
         network.addLink(connection1_we);
         network.addLink(connection2_we);
         network.addLink(connection3_we);
         network.addLink(connection4_we);
         network.addLink(connection5_we);
-        network.addLink(connection6_we);
         network.addLink(startLink_we);
         network.addLink(endLink_we);
 
-        var startLink_ew = createLink("pt_1_ew", endNode, AngerCrottendorf);
-        var connection1_ew = createLink("pt_2_ew", AngerCrottendorf, Riebeckstraße);
-        var connection2_ew = createLink("pt_3_ew", Riebeckstraße, Gerichtsweg);
-        var connection3_ew = createLink("pt_4_ew", Gerichtsweg, Hbf);
-        var connection4_ew = createLink("pt_5_ew", Hbf, Sportforum);
-        var connection5_ew = createLink("pt_6_ew", Sportforum, Lindenauer);
-        var connection6_ew = createLink("pt_7_ew", Lindenauer, Plagwitz);
-        var endLink_ew = createLink("pt_8_ew", Plagwitz, startNode);
+        var startLink_ew = createLink("pt_1_ew", endNode, LeipzigOst);
+        var connection1_ew = createLink("pt_2_ew", LeipzigOst, FriedrichListPlatz);
+        var connection2_ew = createLink("pt_3_ew", FriedrichListPlatz, Hbf);
+        var connection3_ew = createLink("pt_4_ew", Hbf, Sportforum);
+        var connection4_ew = createLink("pt_5_ew", Sportforum, Lindenauer);
+        var connection5_ew = createLink("pt_6_ew", Lindenauer, Plagwitz);
+        var endLink_ew = createLink("pt_7_ew", Plagwitz, startNode);
         network.addLink(connection1_ew);
         network.addLink(connection2_ew);
         network.addLink(connection3_ew);
         network.addLink(connection4_ew);
         network.addLink(connection5_ew);
-        network.addLink(connection6_ew);
         network.addLink(startLink_ew);
         network.addLink(endLink_ew);
 
@@ -117,14 +114,11 @@ public class CreateTunnelLine {
         var stop4_facility_we = scheduleFactory.createTransitStopFacility(Id.create("Leipzig-Hbf_we", TransitStopFacility.class), Hbf.getCoord(), false);
         stop4_facility_we.setLinkId(connection3_we.getId());
 
-        var stop5_facility_we = scheduleFactory.createTransitStopFacility(Id.create("Leipzig-Gerichtsweg_we", TransitStopFacility.class), Gerichtsweg.getCoord(), false);
+        var stop5_facility_we = scheduleFactory.createTransitStopFacility(Id.create("Leipzig-FriedrichListPlatz_we", TransitStopFacility.class), FriedrichListPlatz.getCoord(), false);
         stop5_facility_we.setLinkId(connection4_we.getId());
 
-        var stop6_facility_we = scheduleFactory.createTransitStopFacility(Id.create("Leipzig-Riebeckstraße_we", TransitStopFacility.class), Riebeckstraße.getCoord(), false);
+        var stop6_facility_we = scheduleFactory.createTransitStopFacility(Id.create("Leipzig-LeipzigOst_we", TransitStopFacility.class), LeipzigOst.getCoord(), false);
         stop6_facility_we.setLinkId(connection5_we.getId());
-
-        var stop7_facility_we = scheduleFactory.createTransitStopFacility(Id.create("Leipzig-Anger-Crottendorf_we", TransitStopFacility.class), AngerCrottendorf.getCoord(), false);
-        stop7_facility_we.setLinkId(connection6_we.getId());
 
         scenario.getTransitSchedule().addStopFacility(stop1_facility_we);
         scenario.getTransitSchedule().addStopFacility(stop2_facility_we);
@@ -132,29 +126,25 @@ public class CreateTunnelLine {
         scenario.getTransitSchedule().addStopFacility(stop4_facility_we);
         scenario.getTransitSchedule().addStopFacility(stop5_facility_we);
         scenario.getTransitSchedule().addStopFacility(stop6_facility_we);
-        scenario.getTransitSchedule().addStopFacility(stop7_facility_we);
 
-
-        var stop1_facility_ew = scheduleFactory.createTransitStopFacility(Id.create("Leipzig-Anger-Crottendorf_ew", TransitStopFacility.class),AngerCrottendorf.getCoord(), false);
+        //other direction
+        var stop1_facility_ew = scheduleFactory.createTransitStopFacility(Id.create("Leipzig-LeipzigOst_ew", TransitStopFacility.class),LeipzigOst.getCoord(), false);
         stop1_facility_ew.setLinkId(startLink_ew.getId());
 
-        var stop2_facility_ew = scheduleFactory.createTransitStopFacility(Id.create("Leipzig-Riebeckstraße_ew", TransitStopFacility.class), Riebeckstraße.getCoord(), false);
+        var stop2_facility_ew = scheduleFactory.createTransitStopFacility(Id.create("Leipzig-FriedrichListPlatz_ew", TransitStopFacility.class), FriedrichListPlatz.getCoord(), false);
         stop2_facility_ew.setLinkId(connection1_ew.getId());
 
-        var stop3_facility_ew = scheduleFactory.createTransitStopFacility(Id.create("Leipzig-Gerichtsweg_ew", TransitStopFacility.class), Gerichtsweg.getCoord(), false);
+        var stop3_facility_ew = scheduleFactory.createTransitStopFacility(Id.create("Leipzig-Hbf_ew", TransitStopFacility.class), Hbf.getCoord(), false);
         stop3_facility_ew.setLinkId(connection2_ew.getId());
 
-        var stop4_facility_ew = scheduleFactory.createTransitStopFacility(Id.create("Leipzig-Hbf_ew", TransitStopFacility.class), Hbf.getCoord(), false);
+        var stop4_facility_ew = scheduleFactory.createTransitStopFacility(Id.create("Leipzig-Sportforum_ew", TransitStopFacility.class), Sportforum.getCoord(), false);
         stop4_facility_ew.setLinkId(connection3_ew.getId());
 
-        var stop5_facility_ew = scheduleFactory.createTransitStopFacility(Id.create("Leipzig-Sportforum_ew", TransitStopFacility.class), Sportforum.getCoord(), false);
+        var stop5_facility_ew = scheduleFactory.createTransitStopFacility(Id.create("Leipzig-Lindenauer_ew", TransitStopFacility.class), Lindenauer.getCoord(), false);
         stop5_facility_ew.setLinkId(connection4_ew.getId());
 
-        var stop6_facility_ew = scheduleFactory.createTransitStopFacility(Id.create("Leipzig-Lindenauer_ew", TransitStopFacility.class), Lindenauer.getCoord(), false);
+        var stop6_facility_ew = scheduleFactory.createTransitStopFacility(Id.create("Leipzig-Plagwitz_ew", TransitStopFacility.class), Plagwitz.getCoord(), false);
         stop6_facility_ew.setLinkId(connection5_ew.getId());
-
-        var stop7_facility_ew = scheduleFactory.createTransitStopFacility(Id.create("Leipzig-Plagwitz_ew", TransitStopFacility.class), Plagwitz.getCoord(), false);
-        stop7_facility_ew.setLinkId(connection6_ew.getId());
 
         scenario.getTransitSchedule().addStopFacility(stop1_facility_ew);
         scenario.getTransitSchedule().addStopFacility(stop2_facility_ew);
@@ -162,7 +152,6 @@ public class CreateTunnelLine {
         scenario.getTransitSchedule().addStopFacility(stop4_facility_ew);
         scenario.getTransitSchedule().addStopFacility(stop5_facility_ew);
         scenario.getTransitSchedule().addStopFacility(stop6_facility_ew);
-        scenario.getTransitSchedule().addStopFacility(stop7_facility_ew);
 
         // create TransitRouteStop --- here you have to add the stopps with 120 sec each
         var Stop1_we = scheduleFactory.createTransitRouteStop(stop1_facility_we, 0, 10);
@@ -171,7 +160,6 @@ public class CreateTunnelLine {
         var Stop4_we = scheduleFactory.createTransitRouteStop(stop4_facility_we, 360, 370);
         var Stop5_we = scheduleFactory.createTransitRouteStop(stop5_facility_we, 480, 490);
         var Stop6_we = scheduleFactory.createTransitRouteStop(stop6_facility_we, 600, 610);
-        var Stop7_we = scheduleFactory.createTransitRouteStop(stop7_facility_we, 720, 730);
 
         // east direction
         var Stop1_ew = scheduleFactory.createTransitRouteStop(stop1_facility_ew, 0, 10);
@@ -180,15 +168,14 @@ public class CreateTunnelLine {
         var Stop4_ew = scheduleFactory.createTransitRouteStop(stop4_facility_ew, 360, 370);
         var Stop5_ew = scheduleFactory.createTransitRouteStop(stop5_facility_ew, 480, 490);
         var Stop6_ew = scheduleFactory.createTransitRouteStop(stop6_facility_ew, 600, 610);
-        var Stop7_ew = scheduleFactory.createTransitRouteStop(stop7_facility_ew, 720, 730);
 
         // create TransitRoute
-        var networkRoute_we = RouteUtils.createLinkNetworkRouteImpl(startLink_we.getId(), List.of(connection1_we.getId(),connection2_we.getId(),connection3_we.getId(),connection4_we.getId(),connection5_we.getId(), connection6_we.getId()), endLink_we.getId());
-        var networkRoute_ew = RouteUtils.createLinkNetworkRouteImpl(startLink_ew.getId(), List.of(connection1_ew.getId(),connection2_ew.getId(),connection3_ew.getId(),connection4_ew.getId(),connection5_ew.getId(),connection6_ew.getId()), startLink_ew.getId());
+        var networkRoute_we = RouteUtils.createLinkNetworkRouteImpl(startLink_we.getId(), List.of(connection1_we.getId(),connection2_we.getId(),connection3_we.getId(),connection4_we.getId(),connection5_we.getId()), endLink_we.getId());
+        var networkRoute_ew = RouteUtils.createLinkNetworkRouteImpl(startLink_ew.getId(), List.of(connection1_ew.getId(),connection2_ew.getId(),connection3_ew.getId(),connection4_ew.getId(),connection5_ew.getId()), startLink_ew.getId());
 
         //modify this, add stops to list
-        var route_we = scheduleFactory.createTransitRoute(Id.create("route-we", TransitRoute.class), networkRoute_we, List.of(Stop1_we, Stop2_we, Stop3_we, Stop4_we, Stop5_we, Stop6_we, Stop7_we), "pt");
-        var route_ew = scheduleFactory.createTransitRoute(Id.create("route-ew", TransitRoute.class), networkRoute_ew, List.of(Stop1_ew, Stop2_ew, Stop3_ew, Stop4_ew, Stop5_ew, Stop6_ew, Stop7_ew), "pt");
+        var route_we = scheduleFactory.createTransitRoute(Id.create("route-we", TransitRoute.class), networkRoute_we, List.of(Stop1_we, Stop2_we, Stop3_we, Stop4_we, Stop5_we, Stop6_we), "pt");
+        var route_ew = scheduleFactory.createTransitRoute(Id.create("route-ew", TransitRoute.class), networkRoute_ew, List.of(Stop1_ew, Stop2_ew, Stop3_ew, Stop4_ew, Stop5_ew, Stop6_ew), "pt");
 
         // create Departures & corresponding Vehicles
         for (int i = 6 * 3600; i < 23 * 3600; i += 300) {
@@ -219,8 +206,8 @@ public class CreateTunnelLine {
         scenario.getTransitSchedule().addTransitLine(line1);
 
         // export input files required for simulation.
-        new NetworkWriter(network).write(root.resolve("network-with-sbahn-tunnel.xml.gz").toString());
-        new TransitScheduleWriter(scenario.getTransitSchedule()).writeFile(root.resolve("transit-Schedule-tunnel.xml.gz").toString());
+        new NetworkWriter(network).write(root.resolve("network-with-sbahn-tunnel_north.xml.gz").toString());
+        new TransitScheduleWriter(scenario.getTransitSchedule()).writeFile(root.resolve("transit-Schedule-tunnel_north.xml.gz").toString());
         new MatsimVehicleWriter(scenario.getTransitVehicles()).writeFile(root.resolve("transit-vehicles-tunnel.xml.gz").toString());
     }
 
@@ -234,3 +221,4 @@ public class CreateTunnelLine {
     }
 
 }
+
